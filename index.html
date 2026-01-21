@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Ahalia Hospitals</title>
+
+<style>
+body {
+    margin: 0;
+    font-family: 'Segoe UI', sans-serif;
+    background: linear-gradient(180deg, #f0faf8, #ffffff);
+    color: #2f4f4f;
+}
+
+header {
+    background: #2c7a7b;
+    padding: 18px 40px;
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+header h3 {
+    margin: 0;
+    font-size: 22px;
+}
+
+header button {
+    background: white;
+    border: none;
+    padding: 10px 18px;
+    border-radius: 25px;
+    cursor: pointer;
+    font-weight: bold;
+    color: #2c7a7b;
+}
+
+.container {
+    padding: 60px 50px;
+}
+
+.hidden { display: none; }
+
+/* HERO */
+.hero {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+    align-items: center;
+    margin-bottom: 80px;
+}
+
+.hero h1 {
+    font-size: 42px;
+    color: #2c7a7b;
+}
+
+.hero p {
+    font-size: 18px;
+    line-height: 1.6;
+}
+
+.hero-box {
+    background: white;
+    border-radius: 30px;
+    padding: 40px;
+    box-shadow: 0 15px 40px rgba(0,0,0,0.08);
+}
+
+/* TITLES */
+.section-title {
+    text-align: center;
+    font-size: 32px;
+    margin-bottom: 20px;
+    color: #2c7a7b;
+}
+
+.section-subtitle {
+    text-align: center;
+    max-width: 700px;
+    margin: auto;
+    font-size: 17px;
+    margin-bottom: 50px;
+}
+
+/* CARDS */
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 30px;
+}
+
+.card {
+    background: white;
+    border-radius: 25px;
+    padding: 30px;
+    box-shadow: 0 12px 30px rgba(0,0,0,0.08);
+    text-align: center;
+}
+
+.card button {
+    margin-top: 18px;
+    padding: 10px 24px;
+    border: none;
+    background: #2c7a7b;
+    color: white;
+    border-radius: 25px;
+    cursor: pointer;
+}
+
+/* FEATURES */
+.features {
+    background: #e6f4f1;
+    border-radius: 40px;
+    padding: 60px;
+    margin: 90px 0;
+}
+
+.feature-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 30px;
+}
+
+.feature {
+    background: white;
+    padding: 25px;
+    border-radius: 20px;
+    text-align: center;
+}
+
+/* STATS */
+.stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 30px;
+    margin: 80px 0;
+    text-align: center;
+}
+
+.stat {
+    background: white;
+    padding: 30px;
+    border-radius: 25px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+}
+
+.stat h2 {
+    color: #2c7a7b;
+}
+
+/* CTA */
+.cta {
+    background: linear-gradient(120deg, #2c7a7b, #38b2ac);
+    color: white;
+    padding: 70px;
+    border-radius: 40px;
+    text-align: center;
+}
+
+.cta button {
+    margin-top: 25px;
+    padding: 14px 30px;
+    border: none;
+    border-radius: 30px;
+    background: white;
+    color: #2c7a7b;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+/* POPUPS */
+.popup {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(0,0,0,0.5);
+    display: none;
+    justify-content: center;
+    align-items: center;
+}
+
+.popup.show { display: flex; }
+
+.popup-content {
+    background: white;
+    padding: 30px;
+    width: 320px;
+    border-radius: 25px;
+    text-align: center;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <h3>Ahalia Hospitals</h3>
+    <button onclick="showBookings()">Booked Slots</button>
+</header>
+
+<!-- HOME -->
+<div class="container" id="home">
+
+    <div class="hero">
+        <div>
+            <h1>Care That Heals, Compassion That Comforts</h1>
+            <p>
+                Ahalia Hospitals delivers world-class healthcare with advanced
+                technology, expert doctors, and compassionate service.
+            </p>
+        </div>
+        <div class="hero-box">
+            <h3>24/7 Emergency Care</h3>
+            <p>🏥 Advanced Facilities</p>
+            <p>👨‍⚕️ Expert Specialists</p>
+            <p>💊 Trusted Treatment</p>
+        </div>
+    </div>
+
+    <h2 class="section-title">Our Hospital Specialities</h2>
+    <p class="section-subtitle">
+        Comprehensive healthcare services across multiple medical disciplines.
+    </p>
+
+    <div class="grid">
+        <div class="card">
+            <h3>Ahalia Diabetes Care</h3>
+            <p>Complete diabetes management and lifestyle care.</p>
+            <button onclick="openHospital('diabetes')">View Doctors</button>
+        </div>
+        <div class="card">
+            <h3>Ahalia Optometry</h3>
+            <p>Advanced eye care with modern diagnostics.</p>
+            <button onclick="openHospital('optiometry')">View Doctors</button>
+        </div>
+        <div class="card">
+            <h3>Ahalia Ayurvedha</h3>
+            <p>Holistic healing through traditional medicine.</p>
+            <button onclick="openHospital('ayurvedha')">View Doctors</button>
+        </div>
+        <div class="card">
+            <h3>Ahalia Women & Children</h3>
+            <p>Specialized care for women and pediatric health.</p>
+            <button onclick="openHospital('women')">View Doctors</button>
+        </div>
+    </div>
+
+    <div class="features">
+        <h2 class="section-title">Why Choose Ahalia?</h2>
+        <div class="feature-grid">
+            <div class="feature">✔ Experienced Doctors</div>
+            <div class="feature">✔ Patient-Centric Care</div>
+            <div class="feature">✔ Modern Technology</div>
+            <div class="feature">✔ Affordable Treatment</div>
+        </div>
+    </div>
+
+    <div class="stats">
+        <div class="stat"><h2>25+</h2><p>Years Experience</p></div>
+        <div class="stat"><h2>150+</h2><p>Doctors</p></div>
+        <div class="stat"><h2>50k+</h2><p>Patients</p></div>
+        <div class="stat"><h2>24/7</h2><p>Emergency</p></div>
+    </div>
+
+    <div class="cta">
+        <h2>Your Health, Our Responsibility</h2>
+        <p>Book your appointment today.</p>
+        <button onclick="openHospital('diabetes')">Book Appointment</button>
+    </div>
+</div>
+
+<!-- DOCTORS -->
+<div class="container hidden" id="doctorsPage">
+    <h2 class="section-title">Doctors Available</h2>
+    <div class="grid" id="doctorsList"></div>
+    <br><center><button onclick="goHome()">⬅ Back to Home</button></center>
+</div>
+
+<!-- BOOKINGS -->
+<div class="container hidden" id="bookingsPage">
+    <h2 class="section-title">Your Booked Slots</h2>
+    <div class="grid" id="bookingsList"></div>
+    <br><center><button onclick="goHome()">⬅ Back to Home</button></center>
+</div>
+
+<!-- POPUPS -->
+<div class="popup" id="bookingPopup">
+    <div class="popup-content">
+        <h3>Book Slot</h3>
+        <input id="userName" placeholder="Your Name">
+        <input id="userPhone" placeholder="Phone Number">
+        <input id="consultDate" type="date">
+        <button onclick="showQR()">Confirm</button>
+    </div>
+</div>
+
+<div class="popup" id="qrPopup">
+    <div class="popup-content">
+        <h3>Scan & Pay</h3>
+        <img width="180" src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=AhaliaPayment">
+        <button onclick="finalConfirm()">Payment Done</button>
+    </div>
+</div>
+
+<script>
+const home = document.getElementById("home");
+const doctorsPage = document.getElementById("doctorsPage");
+const bookingsPage = document.getElementById("bookingsPage");
+const doctorsList = document.getElementById("doctorsList");
+const bookingsList = document.getElementById("bookingsList");
+const bookingPopup = document.getElementById("bookingPopup");
+const qrPopup = document.getElementById("qrPopup");
+const userName = document.getElementById("userName");
+const userPhone = document.getElementById("userPhone");
+const consultDate = document.getElementById("consultDate");
+
+const doctorsData = {
+    diabetes: [
+        {name:"Dr. Anil Kumar", dept:"Endocrinology", time:"Mon–Fri 9AM–1PM"},
+        {name:"Dr. Meera Raj", dept:"Diabetology", time:"Tue–Thu 2PM–6PM"}
+    ],
+    optiometry: [
+        {name:"Dr. Sunil Menon", dept:"Eye Care", time:"Mon–Sat 10AM–4PM"}
+    ],
+    ayurvedha: [
+        {name:"Dr. Suresh Nair", dept:"Ayurvedic Medicine", time:"Mon–Fri 9AM–2PM"}
+    ],
+    women: [
+        {name:"Dr. Lakshmi Devi", dept:"Gynecology", time:"Mon–Sat 11AM–3PM"},
+        {name:"Dr. Priya Menon", dept:"Pediatrics", time:"Tue–Fri 10AM–1PM"}
+    ]
+};
+
+let selectedDoctor = "";
+
+function openHospital(type) {
+    home.classList.add("hidden");
+    doctorsPage.classList.remove("hidden");
+    doctorsList.innerHTML = "";
+    doctorsData[type].forEach(d => {
+        doctorsList.innerHTML += `
+        <div class="card">
+            <h3>${d.name}</h3>
+            <p>${d.dept}</p>
+            <p>${d.time}</p>
+            <button onclick="bookDoctor('${d.name}')">Book Slot</button>
+        </div>`;
+    });
+}
+
+function bookDoctor(name) {
+    selectedDoctor = name;
+    bookingPopup.classList.add("show");
+}
+
+function showQR() {
+    bookingPopup.classList.remove("show");
+    qrPopup.classList.add("show");
+}
+
+function finalConfirm() {
+    const booking = {
+        doctor: selectedDoctor,
+        name: userName.value,
+        phone: userPhone.value,
+        date: consultDate.value
+    };
+    let bookings = JSON.parse(localStorage.getItem("bookings")) || [];
+    bookings.push(booking);
+    localStorage.setItem("bookings", JSON.stringify(bookings));
+    qrPopup.classList.remove("show");
+    alert("Slot booked successfully!");
+    goHome();
+}
+
+function showBookings() {
+    home.classList.add("hidden");
+    doctorsPage.classList.add("hidden");
+    bookingsPage.classList.remove("hidden");
+    bookingsList.innerHTML = "";
+    let bookings = JSON.parse(localStorage.getItem("bookings")) || [];
+    bookings.forEach(b => {
+        bookingsList.innerHTML += `
+        <div class="card">
+            <h3>${b.doctor}</h3>
+            <p>${b.name}</p>
+            <p>${b.phone}</p>
+            <p>${b.date}</p>
+        </div>`;
+    });
+}
+
+function goHome() {
+    home.classList.remove("hidden");
+    doctorsPage.classList.add("hidden");
+    bookingsPage.classList.add("hidden");
+}
+</script>
+
+</body>
+</html>
+
