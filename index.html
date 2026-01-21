@@ -191,6 +191,18 @@ header button {
     border-radius: 25px;
     text-align: center;
 }
+
+.popup-content input {
+    width: 100%;
+    padding: 10px;
+    margin-top: 10px;
+}
+
+.popup-content small {
+    color: red;
+    display: none;
+    font-size: 12px;
+}
 </style>
 </head>
 
@@ -207,10 +219,7 @@ header button {
     <div class="hero">
         <div>
             <h1>Care That Heals, Compassion That Comforts</h1>
-            <p>
-                Ahalia Hospitals delivers world-class healthcare with advanced
-                technology, expert doctors, and compassionate service.
-            </p>
+            <p>Ahalia Hospitals delivers world-class healthcare.</p>
         </div>
         <div class="hero-box">
             <h3>24/7 Emergency Care</h3>
@@ -221,54 +230,16 @@ header button {
     </div>
 
     <h2 class="section-title">Our Hospital Specialities</h2>
-    <p class="section-subtitle">
-        Comprehensive healthcare services across multiple medical disciplines.
-    </p>
 
     <div class="grid">
         <div class="card">
             <h3>Ahalia Diabetes Care</h3>
-            <p>Complete diabetes management and lifestyle care.</p>
             <button onclick="openHospital('diabetes')">View Doctors</button>
         </div>
         <div class="card">
             <h3>Ahalia Optometry</h3>
-            <p>Advanced eye care with modern diagnostics.</p>
-            <button onclick="openHospital('optiometry')">View Doctors</button>
+            <button onclick="openHospital('optometry')">View Doctors</button>
         </div>
-        <div class="card">
-            <h3>Ahalia Ayurvedha</h3>
-            <p>Holistic healing through traditional medicine.</p>
-            <button onclick="openHospital('ayurvedha')">View Doctors</button>
-        </div>
-        <div class="card">
-            <h3>Ahalia Women & Children</h3>
-            <p>Specialized care for women and pediatric health.</p>
-            <button onclick="openHospital('women')">View Doctors</button>
-        </div>
-    </div>
-
-    <div class="features">
-        <h2 class="section-title">Why Choose Ahalia?</h2>
-        <div class="feature-grid">
-            <div class="feature">✔ Experienced Doctors</div>
-            <div class="feature">✔ Patient-Centric Care</div>
-            <div class="feature">✔ Modern Technology</div>
-            <div class="feature">✔ Affordable Treatment</div>
-        </div>
-    </div>
-
-    <div class="stats">
-        <div class="stat"><h2>25+</h2><p>Years Experience</p></div>
-        <div class="stat"><h2>150+</h2><p>Doctors</p></div>
-        <div class="stat"><h2>50k+</h2><p>Patients</p></div>
-        <div class="stat"><h2>24/7</h2><p>Emergency</p></div>
-    </div>
-
-    <div class="cta">
-        <h2>Your Health, Our Responsibility</h2>
-        <p>Book your appointment today.</p>
-        <button onclick="openHospital('diabetes')">Book Appointment</button>
     </div>
 </div>
 
@@ -276,27 +247,34 @@ header button {
 <div class="container hidden" id="doctorsPage">
     <h2 class="section-title">Doctors Available</h2>
     <div class="grid" id="doctorsList"></div>
-    <br><center><button onclick="goHome()">⬅ Back to Home</button></center>
+    <br><center><button onclick="goHome()">⬅ Back</button></center>
 </div>
 
 <!-- BOOKINGS -->
 <div class="container hidden" id="bookingsPage">
     <h2 class="section-title">Your Booked Slots</h2>
     <div class="grid" id="bookingsList"></div>
-    <br><center><button onclick="goHome()">⬅ Back to Home</button></center>
+    <br><center><button onclick="goHome()">⬅ Back</button></center>
 </div>
 
-<!-- POPUPS -->
+<!-- BOOKING POPUP -->
 <div class="popup" id="bookingPopup">
     <div class="popup-content">
         <h3>Book Slot</h3>
         <input id="userName" placeholder="Your Name">
+        <small id="nameError">Enter your name</small>
+
         <input id="userPhone" placeholder="Phone Number">
+        <small id="phoneError">Enter valid 10-digit phone</small>
+
         <input id="consultDate" type="date">
+        <small id="dateError">Select a date</small>
+
         <button onclick="showQR()">Confirm</button>
     </div>
 </div>
 
+<!-- QR -->
 <div class="popup" id="qrPopup">
     <div class="popup-content">
         <h3>Scan & Pay</h3>
@@ -313,28 +291,17 @@ const doctorsList = document.getElementById("doctorsList");
 const bookingsList = document.getElementById("bookingsList");
 const bookingPopup = document.getElementById("bookingPopup");
 const qrPopup = document.getElementById("qrPopup");
+
 const userName = document.getElementById("userName");
 const userPhone = document.getElementById("userPhone");
 const consultDate = document.getElementById("consultDate");
 
-const doctorsData = {
-    diabetes: [
-        {name:"Dr. Anil Kumar", dept:"Endocrinology", time:"Mon–Fri 9AM–1PM"},
-        {name:"Dr. Meera Raj", dept:"Diabetology", time:"Tue–Thu 2PM–6PM"}
-    ],
-    optiometry: [
-        {name:"Dr. Sunil Menon", dept:"Eye Care", time:"Mon–Sat 10AM–4PM"}
-    ],
-    ayurvedha: [
-        {name:"Dr. Suresh Nair", dept:"Ayurvedic Medicine", time:"Mon–Fri 9AM–2PM"}
-    ],
-    women: [
-        {name:"Dr. Lakshmi Devi", dept:"Gynecology", time:"Mon–Sat 11AM–3PM"},
-        {name:"Dr. Priya Menon", dept:"Pediatrics", time:"Tue–Fri 10AM–1PM"}
-    ]
-};
-
 let selectedDoctor = "";
+
+const doctorsData = {
+    diabetes: [{name:"Dr. Anil Kumar", dept:"Endocrinology"}],
+    optometry: [{name:"Dr. Sunil Menon", dept:"Eye Care"}]
+};
 
 function openHospital(type) {
     home.classList.add("hidden");
@@ -345,7 +312,6 @@ function openHospital(type) {
         <div class="card">
             <h3>${d.name}</h3>
             <p>${d.dept}</p>
-            <p>${d.time}</p>
             <button onclick="bookDoctor('${d.name}')">Book Slot</button>
         </div>`;
     });
@@ -357,19 +323,41 @@ function bookDoctor(name) {
 }
 
 function showQR() {
+    document.getElementById("nameError").style.display = "none";
+    document.getElementById("phoneError").style.display = "none";
+    document.getElementById("dateError").style.display = "none";
+
+    let valid = true;
+
+    if (userName.value.trim() === "") {
+        document.getElementById("nameError").style.display = "block";
+        valid = false;
+    }
+
+    if (!/^\d{10}$/.test(userPhone.value)) {
+        document.getElementById("phoneError").style.display = "block";
+        valid = false;
+    }
+
+    if (consultDate.value === "") {
+        document.getElementById("dateError").style.display = "block";
+        valid = false;
+    }
+
+    if (!valid) return;
+
     bookingPopup.classList.remove("show");
     qrPopup.classList.add("show");
 }
 
 function finalConfirm() {
-    const booking = {
+    let bookings = JSON.parse(localStorage.getItem("bookings")) || [];
+    bookings.push({
         doctor: selectedDoctor,
         name: userName.value,
         phone: userPhone.value,
         date: consultDate.value
-    };
-    let bookings = JSON.parse(localStorage.getItem("bookings")) || [];
-    bookings.push(booking);
+    });
     localStorage.setItem("bookings", JSON.stringify(bookings));
     qrPopup.classList.remove("show");
     alert("Slot booked successfully!");
@@ -378,7 +366,6 @@ function finalConfirm() {
 
 function showBookings() {
     home.classList.add("hidden");
-    doctorsPage.classList.add("hidden");
     bookingsPage.classList.remove("hidden");
     bookingsList.innerHTML = "";
     let bookings = JSON.parse(localStorage.getItem("bookings")) || [];
@@ -402,4 +389,3 @@ function goHome() {
 
 </body>
 </html>
-
