@@ -117,19 +117,6 @@ header button {
     margin: 90px 0;
 }
 
-.feature-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    gap: 30px;
-}
-
-.feature {
-    background: white;
-    padding: 25px;
-    border-radius: 20px;
-    text-align: center;
-}
-
 /* STATS */
 .stats {
     display: grid;
@@ -146,9 +133,7 @@ header button {
     box-shadow: 0 10px 25px rgba(0,0,0,0.08);
 }
 
-.stat h2 {
-    color: #2c7a7b;
-}
+.stat h2 { color: #2c7a7b; }
 
 /* CTA */
 .cta {
@@ -157,18 +142,6 @@ header button {
     padding: 70px;
     border-radius: 40px;
     text-align: center;
-}
-
-.cta button {
-    margin-top: 25px;
-    padding: 14px 30px;
-    border: none;
-    border-radius: 30px;
-    background: white;
-    color: #2c7a7b;
-    font-size: 16px;
-    font-weight: bold;
-    cursor: pointer;
 }
 
 /* POPUPS */
@@ -187,7 +160,7 @@ header button {
 .popup-content {
     background: white;
     padding: 30px;
-    width: 320px;
+    width: 330px;
     border-radius: 25px;
     text-align: center;
 }
@@ -200,8 +173,8 @@ header button {
 
 .popup-content small {
     color: red;
-    display: none;
     font-size: 12px;
+    display: none;
 }
 </style>
 </head>
@@ -219,7 +192,7 @@ header button {
     <div class="hero">
         <div>
             <h1>Care That Heals, Compassion That Comforts</h1>
-            <p>Ahalia Hospitals delivers world-class healthcare.</p>
+            <p>World-class healthcare with advanced technology and expert doctors.</p>
         </div>
         <div class="hero-box">
             <h3>24/7 Emergency Care</h3>
@@ -240,12 +213,32 @@ header button {
             <h3>Ahalia Optometry</h3>
             <button onclick="openHospital('optometry')">View Doctors</button>
         </div>
+        <div class="card">
+            <h3>Ahalia Ayurvedha</h3>
+            <button onclick="openHospital('ayurvedha')">View Doctors</button>
+        </div>
+        <div class="card">
+            <h3>Ahalia Women & Children</h3>
+            <button onclick="openHospital('women')">View Doctors</button>
+        </div>
+    </div>
+
+    <div class="stats">
+        <div class="stat"><h2>25+</h2><p>Years</p></div>
+        <div class="stat"><h2>150+</h2><p>Doctors</p></div>
+        <div class="stat"><h2>50k+</h2><p>Patients</p></div>
+        <div class="stat"><h2>24/7</h2><p>Emergency</p></div>
+    </div>
+
+    <div class="cta">
+        <h2>Your Health, Our Responsibility</h2>
+        <p>Book your appointment today</p>
     </div>
 </div>
 
 <!-- DOCTORS -->
 <div class="container hidden" id="doctorsPage">
-    <h2 class="section-title">Doctors Available</h2>
+    <h2 class="section-title">Available Doctors</h2>
     <div class="grid" id="doctorsList"></div>
     <br><center><button onclick="goHome()">⬅ Back</button></center>
 </div>
@@ -299,8 +292,18 @@ const consultDate = document.getElementById("consultDate");
 let selectedDoctor = "";
 
 const doctorsData = {
-    diabetes: [{name:"Dr. Anil Kumar", dept:"Endocrinology"}],
-    optometry: [{name:"Dr. Sunil Menon", dept:"Eye Care"}]
+    diabetes: [
+        { name: "Dr. Anil Kumar", dept: "Endocrinology", time: "Mon–Fri 9AM–1PM" }
+    ],
+    optometry: [
+        { name: "Dr. Sunil Menon", dept: "Eye Care", time: "Mon–Sat 10AM–4PM" }
+    ],
+    ayurvedha: [
+        { name: "Dr. Suresh Nair", dept: "Ayurvedic Medicine", time: "Mon–Fri 9AM–2PM" }
+    ],
+    women: [
+        { name: "Dr. Lakshmi Devi", dept: "Gynecology", time: "Mon–Sat 11AM–3PM" }
+    ]
 };
 
 function openHospital(type) {
@@ -312,6 +315,7 @@ function openHospital(type) {
         <div class="card">
             <h3>${d.name}</h3>
             <p>${d.dept}</p>
+            <p>${d.time}</p>
             <button onclick="bookDoctor('${d.name}')">Book Slot</button>
         </div>`;
     });
@@ -328,22 +332,9 @@ function showQR() {
     document.getElementById("dateError").style.display = "none";
 
     let valid = true;
-
-    if (userName.value.trim() === "") {
-        document.getElementById("nameError").style.display = "block";
-        valid = false;
-    }
-
-    if (!/^\d{10}$/.test(userPhone.value)) {
-        document.getElementById("phoneError").style.display = "block";
-        valid = false;
-    }
-
-    if (consultDate.value === "") {
-        document.getElementById("dateError").style.display = "block";
-        valid = false;
-    }
-
+    if (userName.value.trim() === "") { nameError.style.display = "block"; valid = false; }
+    if (!/^\d{10}$/.test(userPhone.value)) { phoneError.style.display = "block"; valid = false; }
+    if (consultDate.value === "") { dateError.style.display = "block"; valid = false; }
     if (!valid) return;
 
     bookingPopup.classList.remove("show");
