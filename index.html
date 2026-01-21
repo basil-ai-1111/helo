@@ -5,176 +5,241 @@
 <title>Ahalia Hospitals</title>
 
 <style>
-body {
-    margin: 0;
-    font-family: 'Segoe UI', sans-serif;
-    background: linear-gradient(180deg, #f0faf8, #ffffff);
-    color: #2f4f4f;
+:root{
+    --bg-main:#f7f4ef;
+    --bg-card:#ffffff;
+    --primary:#6b9080;
+    --secondary:#a4c3b2;
+    --accent:#cce3de;
+    --text-dark:#3a4f4a;
 }
 
-header {
-    background: #2c7a7b;
-    padding: 18px 40px;
-    color: white;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+*{
+    box-sizing:border-box;
 }
 
-header h3 {
-    margin: 0;
-    font-size: 22px;
+body{
+    margin:0;
+    font-family:'Segoe UI',sans-serif;
+    background:linear-gradient(180deg,#f7f4ef,#eef5f3);
+    color:var(--text-dark);
+    animation:fadeIn 0.8s ease;
 }
 
-header button {
-    background: white;
-    border: none;
-    padding: 10px 18px;
-    border-radius: 25px;
-    cursor: pointer;
-    font-weight: bold;
-    color: #2c7a7b;
+@keyframes fadeIn{
+    from{opacity:0}
+    to{opacity:1}
 }
 
-.container {
-    padding: 60px 50px;
+/* HEADER */
+header{
+    background:rgba(255,255,255,0.7);
+    backdrop-filter:blur(10px);
+    padding:18px 40px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    position:sticky;
+    top:0;
+    z-index:10;
 }
 
-.hidden { display: none; }
+header h3{
+    margin:0;
+    color:var(--primary);
+}
+
+header button{
+    background:var(--primary);
+    color:white;
+    border:none;
+    padding:10px 22px;
+    border-radius:30px;
+    cursor:pointer;
+    transition:all 0.3s ease;
+}
+
+header button:hover{
+    background:#5a7f71;
+    transform:translateY(-2px);
+}
+
+/* CONTAINER */
+.container{
+    padding:60px 50px;
+    animation:slideUp 0.6s ease;
+}
+
+@keyframes slideUp{
+    from{opacity:0; transform:translateY(30px)}
+    to{opacity:1; transform:translateY(0)}
+}
+
+.hidden{display:none}
 
 /* HERO */
-.hero {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 40px;
-    align-items: center;
-    margin-bottom: 80px;
+.hero{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:40px;
+    align-items:center;
+    margin-bottom:80px;
 }
 
-.hero h1 {
-    font-size: 42px;
-    color: #2c7a7b;
+.hero h1{
+    font-size:42px;
+    color:var(--primary);
 }
 
-.hero p {
-    font-size: 18px;
-    line-height: 1.6;
+.hero-box{
+    background:var(--bg-card);
+    padding:40px;
+    border-radius:30px;
+    box-shadow:0 20px 40px rgba(0,0,0,0.08);
+    animation:float 3s ease-in-out infinite;
 }
 
-.hero-box {
-    background: white;
-    border-radius: 30px;
-    padding: 40px;
-    box-shadow: 0 15px 40px rgba(0,0,0,0.08);
+@keyframes float{
+    0%,100%{transform:translateY(0)}
+    50%{transform:translateY(-8px)}
 }
 
 /* TITLES */
-.section-title {
-    text-align: center;
-    font-size: 32px;
-    margin-bottom: 20px;
-    color: #2c7a7b;
+.section-title{
+    text-align:center;
+    font-size:32px;
+    color:var(--primary);
+    margin-bottom:40px;
 }
 
-.section-subtitle {
-    text-align: center;
-    max-width: 700px;
-    margin: auto;
-    font-size: 17px;
-    margin-bottom: 50px;
+/* GRID */
+.grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+    gap:30px;
 }
 
-/* CARDS */
-.grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-    gap: 30px;
+/* CARD */
+.card{
+    background:var(--bg-card);
+    border-radius:28px;
+    padding:30px;
+    text-align:center;
+    box-shadow:0 15px 35px rgba(0,0,0,0.08);
+    transition:all 0.4s ease;
 }
 
-.card {
-    background: white;
-    border-radius: 25px;
-    padding: 30px;
-    box-shadow: 0 12px 30px rgba(0,0,0,0.08);
-    text-align: center;
+.card:hover{
+    transform:translateY(-8px) scale(1.02);
+    box-shadow:0 25px 45px rgba(0,0,0,0.12);
 }
 
-.card button {
-    margin-top: 18px;
-    padding: 10px 24px;
-    border: none;
-    background: #2c7a7b;
-    color: white;
-    border-radius: 25px;
-    cursor: pointer;
+.card button{
+    margin-top:18px;
+    padding:10px 26px;
+    border:none;
+    border-radius:30px;
+    background:var(--secondary);
+    color:#23423b;
+    cursor:pointer;
+    font-weight:600;
+    transition:all 0.3s ease;
 }
 
-/* FEATURES */
-.features {
-    background: #e6f4f1;
-    border-radius: 40px;
-    padding: 60px;
-    margin: 90px 0;
+.card button:hover{
+    background:var(--primary);
+    color:white;
 }
 
 /* STATS */
-.stats {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-    gap: 30px;
-    margin: 80px 0;
-    text-align: center;
+.stats{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+    gap:30px;
+    margin:90px 0;
 }
 
-.stat {
-    background: white;
-    padding: 30px;
-    border-radius: 25px;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+.stat{
+    background:var(--bg-card);
+    padding:30px;
+    border-radius:25px;
+    text-align:center;
+    box-shadow:0 12px 30px rgba(0,0,0,0.08);
+    transition:transform 0.3s ease;
 }
 
-.stat h2 { color: #2c7a7b; }
+.stat:hover{
+    transform:scale(1.05);
+}
+
+.stat h2{
+    color:var(--primary);
+}
 
 /* CTA */
-.cta {
-    background: linear-gradient(120deg, #2c7a7b, #38b2ac);
-    color: white;
-    padding: 70px;
-    border-radius: 40px;
-    text-align: center;
+.cta{
+    background:linear-gradient(120deg,var(--secondary),var(--accent));
+    padding:70px;
+    border-radius:40px;
+    text-align:center;
+    color:#23423b;
+    box-shadow:0 20px 40px rgba(0,0,0,0.1);
 }
 
-/* POPUPS */
-.popup {
-    position: fixed;
-    top: 0; left: 0;
-    width: 100%; height: 100%;
-    background: rgba(0,0,0,0.5);
-    display: none;
-    justify-content: center;
-    align-items: center;
+/* POPUP */
+.popup{
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,0.4);
+    display:none;
+    justify-content:center;
+    align-items:center;
+    animation:fadeIn 0.4s ease;
 }
 
-.popup.show { display: flex; }
+.popup.show{display:flex}
 
-.popup-content {
-    background: white;
-    padding: 30px;
-    width: 330px;
-    border-radius: 25px;
-    text-align: center;
+.popup-content{
+    background:white;
+    padding:35px;
+    width:340px;
+    border-radius:30px;
+    text-align:center;
+    animation:zoomIn 0.4s ease;
 }
 
-.popup-content input {
-    width: 100%;
-    padding: 10px;
-    margin-top: 10px;
+@keyframes zoomIn{
+    from{transform:scale(0.8); opacity:0}
+    to{transform:scale(1); opacity:1}
 }
 
-.popup-content small {
-    color: red;
-    font-size: 12px;
-    display: none;
+.popup-content input{
+    width:100%;
+    padding:12px;
+    margin-top:12px;
+    border-radius:20px;
+    border:1px solid #ccc;
+}
+
+.popup-content button{
+    margin-top:20px;
+    padding:12px 26px;
+    border:none;
+    border-radius:30px;
+    background:var(--primary);
+    color:white;
+    cursor:pointer;
+    transition:0.3s;
+}
+
+.popup-content button:hover{
+    background:#5a7f71;
+}
+
+small{
+    color:red;
+    display:none;
+    font-size:12px;
 }
 </style>
 </head>
@@ -186,88 +251,67 @@ header button {
     <button onclick="showBookings()">Booked Slots</button>
 </header>
 
-<!-- HOME -->
 <div class="container" id="home">
-
     <div class="hero">
         <div>
-            <h1>Care That Heals, Compassion That Comforts</h1>
-            <p>World-class healthcare with advanced technology and expert doctors.</p>
+            <h1>Care That Heals,<br>Comfort That Lasts</h1>
+            <p>Gentle, modern healthcare with a human touch.</p>
         </div>
         <div class="hero-box">
             <h3>24/7 Emergency Care</h3>
-            <p>🏥 Advanced Facilities</p>
-            <p>👨‍⚕️ Expert Specialists</p>
-            <p>💊 Trusted Treatment</p>
+            <p>🌿 Calm Healing Environment</p>
+            <p>🩺 Trusted Specialists</p>
+            <p>🤍 Patient-First Care</p>
         </div>
     </div>
 
-    <h2 class="section-title">Our Hospital Specialities</h2>
+    <h2 class="section-title">Our Specialities</h2>
 
     <div class="grid">
-        <div class="card">
-            <h3>Ahalia Diabetes Care</h3>
-            <button onclick="openHospital('diabetes')">View Doctors</button>
-        </div>
-        <div class="card">
-            <h3>Ahalia Optometry</h3>
-            <button onclick="openHospital('optometry')">View Doctors</button>
-        </div>
-        <div class="card">
-            <h3>Ahalia Ayurvedha</h3>
-            <button onclick="openHospital('ayurvedha')">View Doctors</button>
-        </div>
-        <div class="card">
-            <h3>Ahalia Women & Children</h3>
-            <button onclick="openHospital('women')">View Doctors</button>
-        </div>
+        <div class="card"><h3>Diabetes Care</h3><button onclick="openHospital('diabetes')">View Doctors</button></div>
+        <div class="card"><h3>Optometry</h3><button onclick="openHospital('optometry')">View Doctors</button></div>
+        <div class="card"><h3>Ayurvedha</h3><button onclick="openHospital('ayurvedha')">View Doctors</button></div>
+        <div class="card"><h3>Women & Children</h3><button onclick="openHospital('women')">View Doctors</button></div>
     </div>
 
     <div class="stats">
         <div class="stat"><h2>25+</h2><p>Years</p></div>
         <div class="stat"><h2>150+</h2><p>Doctors</p></div>
         <div class="stat"><h2>50k+</h2><p>Patients</p></div>
-        <div class="stat"><h2>24/7</h2><p>Emergency</p></div>
+        <div class="stat"><h2>24/7</h2><p>Support</p></div>
     </div>
 
     <div class="cta">
-        <h2>Your Health, Our Responsibility</h2>
-        <p>Book your appointment today</p>
+        <h2>Your Health, Our Gentle Promise</h2>
+        <p>Book appointments with ease and comfort</p>
     </div>
 </div>
 
-<!-- DOCTORS -->
 <div class="container hidden" id="doctorsPage">
     <h2 class="section-title">Available Doctors</h2>
     <div class="grid" id="doctorsList"></div>
     <br><center><button onclick="goHome()">⬅ Back</button></center>
 </div>
 
-<!-- BOOKINGS -->
 <div class="container hidden" id="bookingsPage">
     <h2 class="section-title">Your Booked Slots</h2>
     <div class="grid" id="bookingsList"></div>
     <br><center><button onclick="goHome()">⬅ Back</button></center>
 </div>
 
-<!-- BOOKING POPUP -->
 <div class="popup" id="bookingPopup">
     <div class="popup-content">
-        <h3>Book Slot</h3>
+        <h3>Book Appointment</h3>
         <input id="userName" placeholder="Your Name">
-        <small id="nameError">Enter your name</small>
-
+        <small id="nameError">Enter name</small>
         <input id="userPhone" placeholder="Phone Number">
-        <small id="phoneError">Enter valid 10-digit phone</small>
-
+        <small id="phoneError">Enter 10-digit phone</small>
         <input id="consultDate" type="date">
-        <small id="dateError">Select a date</small>
-
+        <small id="dateError">Select date</small>
         <button onclick="showQR()">Confirm</button>
     </div>
 </div>
 
-<!-- QR -->
 <div class="popup" id="qrPopup">
     <div class="popup-content">
         <h3>Scan & Pay</h3>
@@ -277,41 +321,33 @@ header button {
 </div>
 
 <script>
-const home = document.getElementById("home");
-const doctorsPage = document.getElementById("doctorsPage");
-const bookingsPage = document.getElementById("bookingsPage");
-const doctorsList = document.getElementById("doctorsList");
-const bookingsList = document.getElementById("bookingsList");
-const bookingPopup = document.getElementById("bookingPopup");
-const qrPopup = document.getElementById("qrPopup");
+const home=document.getElementById("home");
+const doctorsPage=document.getElementById("doctorsPage");
+const bookingsPage=document.getElementById("bookingsPage");
+const doctorsList=document.getElementById("doctorsList");
+const bookingsList=document.getElementById("bookingsList");
+const bookingPopup=document.getElementById("bookingPopup");
+const qrPopup=document.getElementById("qrPopup");
 
-const userName = document.getElementById("userName");
-const userPhone = document.getElementById("userPhone");
-const consultDate = document.getElementById("consultDate");
+const userName=document.getElementById("userName");
+const userPhone=document.getElementById("userPhone");
+const consultDate=document.getElementById("consultDate");
 
-let selectedDoctor = "";
+let selectedDoctor="";
 
-const doctorsData = {
-    diabetes: [
-        { name: "Dr. Anil Kumar", dept: "Endocrinology", time: "Mon–Fri 9AM–1PM" }
-    ],
-    optometry: [
-        { name: "Dr. Sunil Menon", dept: "Eye Care", time: "Mon–Sat 10AM–4PM" }
-    ],
-    ayurvedha: [
-        { name: "Dr. Suresh Nair", dept: "Ayurvedic Medicine", time: "Mon–Fri 9AM–2PM" }
-    ],
-    women: [
-        { name: "Dr. Lakshmi Devi", dept: "Gynecology", time: "Mon–Sat 11AM–3PM" }
-    ]
+const doctorsData={
+    diabetes:[{name:"Dr. Anil Kumar",dept:"Endocrinology",time:"9AM–1PM"}],
+    optometry:[{name:"Dr. Sunil Menon",dept:"Eye Care",time:"10AM–4PM"}],
+    ayurvedha:[{name:"Dr. Suresh Nair",dept:"Ayurveda",time:"9AM–2PM"}],
+    women:[{name:"Dr. Lakshmi Devi",dept:"Gynecology",time:"11AM–3PM"}]
 };
 
-function openHospital(type) {
+function openHospital(type){
     home.classList.add("hidden");
     doctorsPage.classList.remove("hidden");
-    doctorsList.innerHTML = "";
-    doctorsData[type].forEach(d => {
-        doctorsList.innerHTML += `
+    doctorsList.innerHTML="";
+    doctorsData[type].forEach(d=>{
+        doctorsList.innerHTML+=`
         <div class="card">
             <h3>${d.name}</h3>
             <p>${d.dept}</p>
@@ -321,47 +357,43 @@ function openHospital(type) {
     });
 }
 
-function bookDoctor(name) {
-    selectedDoctor = name;
+function bookDoctor(name){
+    selectedDoctor=name;
     bookingPopup.classList.add("show");
 }
 
-function showQR() {
-    document.getElementById("nameError").style.display = "none";
-    document.getElementById("phoneError").style.display = "none";
-    document.getElementById("dateError").style.display = "none";
-
-    let valid = true;
-    if (userName.value.trim() === "") { nameError.style.display = "block"; valid = false; }
-    if (!/^\d{10}$/.test(userPhone.value)) { phoneError.style.display = "block"; valid = false; }
-    if (consultDate.value === "") { dateError.style.display = "block"; valid = false; }
-    if (!valid) return;
-
+function showQR(){
+    nameError.style.display=phoneError.style.display=dateError.style.display="none";
+    let valid=true;
+    if(userName.value.trim()===""){nameError.style.display="block";valid=false;}
+    if(!/^\d{10}$/.test(userPhone.value)){phoneError.style.display="block";valid=false;}
+    if(consultDate.value===""){dateError.style.display="block";valid=false;}
+    if(!valid) return;
     bookingPopup.classList.remove("show");
     qrPopup.classList.add("show");
 }
 
-function finalConfirm() {
-    let bookings = JSON.parse(localStorage.getItem("bookings")) || [];
+function finalConfirm(){
+    let bookings=JSON.parse(localStorage.getItem("bookings"))||[];
     bookings.push({
-        doctor: selectedDoctor,
-        name: userName.value,
-        phone: userPhone.value,
-        date: consultDate.value
+        doctor:selectedDoctor,
+        name:userName.value,
+        phone:userPhone.value,
+        date:consultDate.value
     });
-    localStorage.setItem("bookings", JSON.stringify(bookings));
+    localStorage.setItem("bookings",JSON.stringify(bookings));
     qrPopup.classList.remove("show");
-    alert("Slot booked successfully!");
+    alert("Appointment booked successfully!");
     goHome();
 }
 
-function showBookings() {
+function showBookings(){
     home.classList.add("hidden");
     bookingsPage.classList.remove("hidden");
-    bookingsList.innerHTML = "";
-    let bookings = JSON.parse(localStorage.getItem("bookings")) || [];
-    bookings.forEach(b => {
-        bookingsList.innerHTML += `
+    bookingsList.innerHTML="";
+    let bookings=JSON.parse(localStorage.getItem("bookings"))||[];
+    bookings.forEach(b=>{
+        bookingsList.innerHTML+=`
         <div class="card">
             <h3>${b.doctor}</h3>
             <p>${b.name}</p>
@@ -371,7 +403,7 @@ function showBookings() {
     });
 }
 
-function goHome() {
+function goHome(){
     home.classList.remove("hidden");
     doctorsPage.classList.add("hidden");
     bookingsPage.classList.add("hidden");
