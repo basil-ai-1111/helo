@@ -5,12 +5,12 @@
 <title>Ahalia Hospitals</title>
 <style>
 :root{
-    --bg-main:#f7f4ef;
-    --bg-card:#ffffff;
-    --primary:#6b9080;
-    --secondary:#a4c3b2;
-    --accent:#cce3de;
-    --text-dark:#3a4f4a;
+    --bg-main:#FAF9F6;
+    --bg-card:#B0C4DE;
+    --primary:#7B68EE;
+    --secondary:#B0C4DE;
+    --accent:#E6E6FA;
+    --text-dark:#2F2F2F;
 }
 
 *{ box-sizing:border-box }
@@ -18,7 +18,7 @@
 body{
     margin:0;
     font-family:'Segoe UI',sans-serif;
-    background:linear-gradient(180deg,#f7f4ef,#eef5f3);
+    background:linear-gradient(180deg,var(--bg-main),var(--accent));
     color:var(--text-dark);
     animation:fadeIn 0.8s ease;
 }
@@ -53,7 +53,7 @@ header button{
 }
 
 header button:hover{
-    background:#5a7f71;
+    background:#6851cc;
     transform:translateY(-2px);
 }
 
@@ -205,7 +205,6 @@ small{
     font-size:12px;
 }
 
-/* Toast Notification */
 .toast{
     position:fixed;
     bottom:30px;
@@ -224,7 +223,6 @@ small{
     transform:translateY(0);
 }
 
-/* Cancel / Edit buttons in card */
 .card .edit, .card .cancel{
     position:absolute;
     top:15px;
@@ -235,8 +233,8 @@ small{
     font-size:12px;
     font-weight:600;
 }
-.card .edit{ right:80px; background:#f0ad4e; color:white; }
-.card .cancel{ right:15px; background:#d9534f; color:white; }
+.card .edit{ right:80px; background:#9370DB; color:white; }
+.card .cancel{ right:15px; background:#FF6B6B; color:white; }
 
 @media(max-width:768px){
   .hero { grid-template-columns: 1fr; gap:20px; }
@@ -269,7 +267,7 @@ small{
 
     <div class="grid">
         <div class="card"><h3>Diabetes Care</h3><button onclick="openHospital('diabetes')">View Doctors</button></div>
-        <div class="card"><h3>Optometry</h3><button onclick="openHospital('optiometry')">View Doctors</button></div>
+        <div class="card"><h3>Optometry</h3><button onclick="openHospital('optometry')">View Doctors</button></div>
         <div class="card"><h3>Ayurvedha</h3><button onclick="openHospital('ayurvedha')">View Doctors</button></div>
         <div class="card"><h3>Women & Children</h3><button onclick="openHospital('women')">View Doctors</button></div>
     </div>
@@ -315,6 +313,7 @@ small{
 <div class="toast" id="toast"></div>
 
 <script>
+// JS logic remains exactly same as previous code (bookings, edit, cancel, popup, toast)
 const home = document.getElementById("home");
 const doctorsPage = document.getElementById("doctorsPage");
 const bookingsPage = document.getElementById("bookingsPage");
@@ -346,7 +345,6 @@ const doctorsData = {
     women:[{name:"Dr. Lakshmi Devi",dept:"Gynecology",slots:["11AM","12PM","1PM","3PM"]}]
 };
 
-// Open doctor list
 function openHospital(type){
     home.classList.add("hidden");
     doctorsPage.classList.remove("hidden");
@@ -362,7 +360,6 @@ function openHospital(type){
     });
 }
 
-// Open booking popup with time slots (disables already booked)
 function bookDoctor(name, slots){
     selectedDoctor = name;
     editingId = null;
@@ -376,7 +373,6 @@ function bookDoctor(name, slots){
     bookingPopup.classList.add("show");
 }
 
-// Disable booked slots dynamically when date changes
 consultDate.addEventListener("input", () => {
     let bookings = JSON.parse(localStorage.getItem("bookings")) || [];
     Array.from(timeSlot.options).forEach(option=>{
@@ -385,26 +381,20 @@ consultDate.addEventListener("input", () => {
     });
 });
 
-// Validate and show QR
 function showQR(){
     nameError.style.display = phoneError.style.display = dateError.style.display = slotError.style.display = "none";
     let valid = true;
-
     if(userName.value.trim()===""){ nameError.style.display="block"; valid=false; }
     if(!/^\d{10}$/.test(userPhone.value)){ phoneError.style.display="block"; valid=false; }
     if(consultDate.value===""){ dateError.style.display="block"; valid=false; }
     if(timeSlot.value===""){ slotError.style.display="block"; valid=false; }
-
     if(!valid) return;
-
     bookingPopup.classList.remove("show");
     qrPopup.classList.add("show");
 }
 
-// Final confirm & save booking
 function finalConfirm(){
     let bookings = JSON.parse(localStorage.getItem("bookings")) || [];
-    
     if(editingId !== null){
         bookings[editingId] = {
             doctor:selectedDoctor,
@@ -424,24 +414,20 @@ function finalConfirm(){
         });
         showToast("Appointment booked!");
     }
-    
     localStorage.setItem("bookings", JSON.stringify(bookings));
     qrPopup.classList.remove("show");
     goHome();
 }
 
-// Show bookings
 function showBookings(){
     home.classList.add("hidden");
     bookingsPage.classList.remove("hidden");
     bookingsList.innerHTML="";
-
     let bookings = JSON.parse(localStorage.getItem("bookings")) || [];
     if(bookings.length === 0){
         bookingsList.innerHTML="<p>No appointments booked yet.</p>";
         return;
     }
-
     bookings.forEach((b,i)=>{
         bookingsList.innerHTML+=`
         <div class="card">
@@ -455,7 +441,6 @@ function showBookings(){
     });
 }
 
-// Edit booking
 function editBooking(index){
     let bookings = JSON.parse(localStorage.getItem("bookings")) || [];
     let b = bookings[index];
@@ -479,7 +464,6 @@ function editBooking(index){
     bookingPopup.classList.add("show");
 }
 
-// Cancel booking
 function cancelBooking(index){
     if(!confirm("Cancel this appointment?")) return;
     let bookings = JSON.parse(localStorage.getItem("bookings")) || [];
@@ -489,14 +473,12 @@ function cancelBooking(index){
     showBookings();
 }
 
-// Go home
 function goHome(){
     home.classList.remove("hidden");
     doctorsPage.classList.add("hidden");
     bookingsPage.classList.add("hidden");
 }
 
-// Show toast
 function showToast(msg){
     toast.textContent = msg;
     toast.classList.add("show");
