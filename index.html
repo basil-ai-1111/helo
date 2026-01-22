@@ -176,12 +176,12 @@ header button:hover{
 .popup-content{
     background:white;
     padding:35px;
-    width:340px;
+    width:360px;
     border-radius:30px;
     text-align:center;
 }
 
-.popup-content input{
+.popup-content input, .popup-content select{
     width:100%;
     padding:12px;
     margin-top:12px;
@@ -244,7 +244,6 @@ small{
 }
 </style>
 </head>
-
 <body>
 
 <header>
@@ -297,6 +296,10 @@ small{
         <small id="phoneError">Enter 10-digit phone</small>
         <input id="consultDate" type="date">
         <small id="dateError">Select date</small>
+        <select id="timeSlot">
+            <option value="">Select Time Slot</option>
+        </select>
+        <small id="slotError">Select a time slot</small>
         <button onclick="showQR()">Confirm</button>
     </div>
 </div>
@@ -324,10 +327,12 @@ const toast = document.getElementById("toast");
 const userName = document.getElementById("userName");
 const userPhone = document.getElementById("userPhone");
 const consultDate = document.getElementById("consultDate");
+const timeSlot = document.getElementById("timeSlot");
 
 const nameError = document.getElementById("nameError");
 const phoneError = document.getElementById("phoneError");
 const dateError = document.getElementById("dateError");
+const slotError = document.getElementById("slotError");
 
 consultDate.min = new Date().toISOString().split("T")[0];
 
@@ -335,10 +340,10 @@ let selectedDoctor = "";
 let editingId = null;
 
 const doctorsData = {
-    diabetes:[{name:"Dr. Anil Kumar",dept:"Endocrinology",time:"9AM–1PM"}],
-    optometry:[{name:"Dr. Sunil Menon",dept:"Eye Care",time:"10AM–4PM"}],
-    ayurvedha:[{name:"Dr. Suresh Nair",dept:"Ayurveda",time:"9AM–2PM"}],
-    women:[{name:"Dr. Lakshmi Devi",dept:"Gynecology",time:"11AM–3PM"}]
+    diabetes:[{name:"Dr. Anil Kumar",dept:"Endocrinology",slots:["9AM","10AM","11AM","12PM"]}],
+    optometry:[{name:"Dr. Sunil Menon",dept:"Eye Care",slots:["10AM","11AM","1PM","3PM"]}],
+    ayurvedha:[{name:"Dr. Suresh Nair",dept:"Ayurveda",slots:["9AM","10AM","12PM","2PM"]}],
+    women:[{name:"Dr. Lakshmi Devi",dept:"Gynecology",slots:["11AM","12PM","1PM","3PM"]}]
 };
 
 // Open doctor list
@@ -351,30 +356,36 @@ function openHospital(type){
         <div class="card">
             <h3>${d.name}</h3>
             <p>${d.dept}</p>
-            <p>${d.time}</p>
-            <button onclick="bookDoctor('${d.name}')">Book Slot</button>
+            <p>Time: ${d.slots.join(", ")}</p>
+            <button onclick="bookDoctor('${d.name}','${JSON.stringify(d.slots)}')">Book Slot</button>
         </div>`;
     });
 }
 
-// Open booking popup
-function bookDoctor(name){
+// Open booking popup with time slots
+function bookDoctor(name, slots){
     selectedDoctor = name;
     editingId = null;
     userName.value = "";
     userPhone.value = "";
     consultDate.value = "";
+    timeSlot.innerHTML = `<option value="">Select Time Slot</option>`;
+    slots = JSON.parse(slots);
+    slots.forEach(s => {
+        timeSlot.innerHTML += `<option value="${s}">${s}</option>`;
+    });
     bookingPopup.classList.add("show");
 }
 
 // Validate and show QR
 function showQR(){
-    nameError.style.display = phoneError.style.display = dateError.style.display = "none";
+    nameError.style.display = phoneError.style.display = dateError.style.display = slotError.style.display = "none";
     let valid = true;
 
     if(userName.value.trim()===""){ nameError.style.display="block"; valid=false; }
     if(!/^\d{10}$/.test(userPhone.value)){ phoneError.style.display="block"; valid=false; }
     if(consultDate.value===""){ dateError.style.display="block"; valid=false; }
+    if(timeSlot.value===""){ slotError.style.display="block"; valid=false; }
 
     if(!valid) return;
 
@@ -387,21 +398,21 @@ function finalConfirm(){
     let bookings = JSON.parse(localStorage.getItem("bookings")) || [];
     
     if(editingId !== null){
-        // Edit existing booking
         bookings[editingId] = {
             doctor:selectedDoctor,
             name:userName.value,
             phone:userPhone.value,
-            date:consultDate.value
+            date:consultDate.value,
+            time:timeSlot.value
         };
         showToast("Appointment updated!");
     } else {
-        // New booking
         bookings.push({
             doctor:selectedDoctor,
             name:userName.value,
             phone:userPhone.value,
-            date:consultDate.value
+            date:consultDate.value,
+            time:timeSlot.value
         });
         showToast("Appointment booked!");
     }
@@ -429,7 +440,7 @@ function showBookings(){
             <h3>${b.doctor}</h3>
             <p>${b.name}</p>
             <p>${b.phone}</p>
-            <p>${b.date}</p>
+            <p>${b.date} | ${b.time}</p>
             <button class="edit" onclick="editBooking(${i})">Edit</button>
             <button class="cancel" onclick="cancelBooking(${i})">Cancel</button>
         </div>`;
@@ -445,6 +456,16 @@ function editBooking(index){
     userName.value = b.name;
     userPhone.value = b.phone;
     consultDate.value = b.date;
+    timeSlot.innerHTML = `<option value="">Select Time Slot</option>`;
+    // populate slots
+    let slots = [];
+    for(let key in doctorsData){
+        doctorsData[key].forEach(d=>{
+            if(d.name === selectedDoctor) slots = d.slots;
+        });
+    }
+    slots.forEach(s => timeSlot.innerHTML += `<option value="${s}">${s}</option>`);
+    timeSlot.value = b.time;
     bookingPopup.classList.add("show");
 }
 
