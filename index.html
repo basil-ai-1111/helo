@@ -14,9 +14,7 @@
     --text-dark:#3a4f4a;
 }
 
-*{
-    box-sizing:border-box;
-}
+*{ box-sizing:border-box }
 
 body{
     margin:0;
@@ -31,7 +29,6 @@ body{
     to{opacity:1}
 }
 
-/* HEADER */
 header{
     background:rgba(255,255,255,0.7);
     backdrop-filter:blur(10px);
@@ -44,10 +41,7 @@ header{
     z-index:10;
 }
 
-header h3{
-    margin:0;
-    color:var(--primary);
-}
+header h3{ margin:0; color:var(--primary) }
 
 header button{
     background:var(--primary);
@@ -56,7 +50,7 @@ header button{
     padding:10px 22px;
     border-radius:30px;
     cursor:pointer;
-    transition:all 0.3s ease;
+    transition:0.3s;
 }
 
 header button:hover{
@@ -64,7 +58,6 @@ header button:hover{
     transform:translateY(-2px);
 }
 
-/* CONTAINER */
 .container{
     padding:60px 50px;
     animation:slideUp 0.6s ease;
@@ -75,9 +68,8 @@ header button:hover{
     to{opacity:1; transform:translateY(0)}
 }
 
-.hidden{display:none}
+.hidden{ display:none }
 
-/* HERO */
 .hero{
     display:grid;
     grid-template-columns:1fr 1fr;
@@ -104,7 +96,6 @@ header button:hover{
     50%{transform:translateY(-8px)}
 }
 
-/* TITLES */
 .section-title{
     text-align:center;
     font-size:32px;
@@ -112,21 +103,19 @@ header button:hover{
     margin-bottom:40px;
 }
 
-/* GRID */
 .grid{
     display:grid;
     grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
     gap:30px;
 }
 
-/* CARD */
 .card{
     background:var(--bg-card);
     border-radius:28px;
     padding:30px;
     text-align:center;
     box-shadow:0 15px 35px rgba(0,0,0,0.08);
-    transition:all 0.4s ease;
+    transition:0.4s;
 }
 
 .card:hover{
@@ -140,10 +129,8 @@ header button:hover{
     border:none;
     border-radius:30px;
     background:var(--secondary);
-    color:#23423b;
     cursor:pointer;
     font-weight:600;
-    transition:all 0.3s ease;
 }
 
 .card button:hover{
@@ -151,7 +138,6 @@ header button:hover{
     color:white;
 }
 
-/* STATS */
 .stats{
     display:grid;
     grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
@@ -165,28 +151,16 @@ header button:hover{
     border-radius:25px;
     text-align:center;
     box-shadow:0 12px 30px rgba(0,0,0,0.08);
-    transition:transform 0.3s ease;
 }
 
-.stat:hover{
-    transform:scale(1.05);
-}
-
-.stat h2{
-    color:var(--primary);
-}
-
-/* CTA */
 .cta{
     background:linear-gradient(120deg,var(--secondary),var(--accent));
     padding:70px;
     border-radius:40px;
     text-align:center;
-    color:#23423b;
     box-shadow:0 20px 40px rgba(0,0,0,0.1);
 }
 
-/* POPUP */
 .popup{
     position:fixed;
     inset:0;
@@ -194,10 +168,9 @@ header button:hover{
     display:none;
     justify-content:center;
     align-items:center;
-    animation:fadeIn 0.4s ease;
 }
 
-.popup.show{display:flex}
+.popup.show{ display:flex }
 
 .popup-content{
     background:white;
@@ -205,12 +178,6 @@ header button:hover{
     width:340px;
     border-radius:30px;
     text-align:center;
-    animation:zoomIn 0.4s ease;
-}
-
-@keyframes zoomIn{
-    from{transform:scale(0.8); opacity:0}
-    to{transform:scale(1); opacity:1}
 }
 
 .popup-content input{
@@ -229,11 +196,6 @@ header button:hover{
     background:var(--primary);
     color:white;
     cursor:pointer;
-    transition:0.3s;
-}
-
-.popup-content button:hover{
-    background:#5a7f71;
 }
 
 small{
@@ -273,18 +235,6 @@ small{
         <div class="card"><h3>Ayurvedha</h3><button onclick="openHospital('ayurvedha')">View Doctors</button></div>
         <div class="card"><h3>Women & Children</h3><button onclick="openHospital('women')">View Doctors</button></div>
     </div>
-
-    <div class="stats">
-        <div class="stat"><h2>25+</h2><p>Years</p></div>
-        <div class="stat"><h2>150+</h2><p>Doctors</p></div>
-        <div class="stat"><h2>50k+</h2><p>Patients</p></div>
-        <div class="stat"><h2>24/7</h2><p>Support</p></div>
-    </div>
-
-    <div class="cta">
-        <h2>Your Health, Our Gentle Promise</h2>
-        <p>Book appointments with ease and comfort</p>
-    </div>
 </div>
 
 <div class="container hidden" id="doctorsPage">
@@ -321,21 +271,27 @@ small{
 </div>
 
 <script>
-const home=document.getElementById("home");
-const doctorsPage=document.getElementById("doctorsPage");
-const bookingsPage=document.getElementById("bookingsPage");
-const doctorsList=document.getElementById("doctorsList");
-const bookingsList=document.getElementById("bookingsList");
-const bookingPopup=document.getElementById("bookingPopup");
-const qrPopup=document.getElementById("qrPopup");
+const home = document.getElementById("home");
+const doctorsPage = document.getElementById("doctorsPage");
+const bookingsPage = document.getElementById("bookingsPage");
+const doctorsList = document.getElementById("doctorsList");
+const bookingsList = document.getElementById("bookingsList");
+const bookingPopup = document.getElementById("bookingPopup");
+const qrPopup = document.getElementById("qrPopup");
 
-const userName=document.getElementById("userName");
-const userPhone=document.getElementById("userPhone");
-const consultDate=document.getElementById("consultDate");
+const userName = document.getElementById("userName");
+const userPhone = document.getElementById("userPhone");
+const consultDate = document.getElementById("consultDate");
 
-let selectedDoctor="";
+const nameError = document.getElementById("nameError");
+const phoneError = document.getElementById("phoneError");
+const dateError = document.getElementById("dateError");
 
-const doctorsData={
+consultDate.min = new Date().toISOString().split("T")[0];
+
+let selectedDoctor = "";
+
+const doctorsData = {
     diabetes:[{name:"Dr. Anil Kumar",dept:"Endocrinology",time:"9AM–1PM"}],
     optometry:[{name:"Dr. Sunil Menon",dept:"Eye Care",time:"10AM–4PM"}],
     ayurvedha:[{name:"Dr. Suresh Nair",dept:"Ayurveda",time:"9AM–2PM"}],
@@ -358,30 +314,36 @@ function openHospital(type){
 }
 
 function bookDoctor(name){
-    selectedDoctor=name;
+    selectedDoctor = name;
+    userName.value = "";
+    userPhone.value = "";
+    consultDate.value = "";
     bookingPopup.classList.add("show");
 }
 
 function showQR(){
-    nameError.style.display=phoneError.style.display=dateError.style.display="none";
-    let valid=true;
-    if(userName.value.trim()===""){nameError.style.display="block";valid=false;}
-    if(!/^\d{10}$/.test(userPhone.value)){phoneError.style.display="block";valid=false;}
-    if(consultDate.value===""){dateError.style.display="block";valid=false;}
+    nameError.style.display = phoneError.style.display = dateError.style.display = "none";
+    let valid = true;
+
+    if(userName.value.trim()===""){ nameError.style.display="block"; valid=false; }
+    if(!/^\d{10}$/.test(userPhone.value)){ phoneError.style.display="block"; valid=false; }
+    if(consultDate.value===""){ dateError.style.display="block"; valid=false; }
+
     if(!valid) return;
+
     bookingPopup.classList.remove("show");
     qrPopup.classList.add("show");
 }
 
 function finalConfirm(){
-    let bookings=JSON.parse(localStorage.getItem("bookings"))||[];
+    let bookings = JSON.parse(localStorage.getItem("bookings")) || [];
     bookings.push({
         doctor:selectedDoctor,
         name:userName.value,
         phone:userPhone.value,
         date:consultDate.value
     });
-    localStorage.setItem("bookings",JSON.stringify(bookings));
+    localStorage.setItem("bookings", JSON.stringify(bookings));
     qrPopup.classList.remove("show");
     alert("Appointment booked successfully!");
     goHome();
@@ -391,7 +353,13 @@ function showBookings(){
     home.classList.add("hidden");
     bookingsPage.classList.remove("hidden");
     bookingsList.innerHTML="";
-    let bookings=JSON.parse(localStorage.getItem("bookings"))||[];
+
+    let bookings = JSON.parse(localStorage.getItem("bookings")) || [];
+    if(bookings.length === 0){
+        bookingsList.innerHTML="<p>No appointments booked yet.</p>";
+        return;
+    }
+
     bookings.forEach(b=>{
         bookingsList.innerHTML+=`
         <div class="card">
