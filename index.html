@@ -24,6 +24,7 @@ body{
     animation:fadeIn 0.8s ease;
 }
 
+/* Fade In */
 @keyframes fadeIn{
     from{opacity:0}
     to{opacity:1}
@@ -50,10 +51,23 @@ header button{
     padding:10px 22px;
     border-radius:30px;
     cursor:pointer;
+    transition:0.3s;
 }
 
+header button:hover{
+    background:#5a7f71;
+    transform:translateY(-2px);
+}
+
+/* Slide Up */
 .container{
     padding:60px 50px;
+    animation:slideUp 0.6s ease;
+}
+
+@keyframes slideUp{
+    from{opacity:0; transform:translateY(30px)}
+    to{opacity:1; transform:translateY(0)}
 }
 
 .hidden{ display:none }
@@ -63,6 +77,7 @@ header button{
     grid-template-columns:1fr 1fr;
     gap:40px;
     align-items:center;
+    margin-bottom:80px;
 }
 
 .hero h1{
@@ -70,11 +85,18 @@ header button{
     color:var(--primary);
 }
 
+/* Floating Hero */
 .hero-box{
     background:var(--bg-card);
     padding:40px;
     border-radius:30px;
     box-shadow:0 20px 40px rgba(0,0,0,0.08);
+    animation:float 3s ease-in-out infinite;
+}
+
+@keyframes float{
+    0%,100%{transform:translateY(0)}
+    50%{transform:translateY(-10px)}
 }
 
 .section-title{
@@ -96,18 +118,31 @@ header button{
     padding:30px;
     text-align:center;
     box-shadow:0 15px 35px rgba(0,0,0,0.08);
+    transition:0.4s;
+}
+
+.card:hover{
+    transform:translateY(-8px) scale(1.02);
+    box-shadow:0 25px 45px rgba(0,0,0,0.12);
 }
 
 .card button{
-    margin-top:15px;
-    padding:10px 22px;
+    margin-top:18px;
+    padding:10px 26px;
     border:none;
     border-radius:30px;
     background:var(--secondary);
     cursor:pointer;
+    font-weight:600;
+    transition:0.3s;
 }
 
-.card button.cancel{
+.card button:hover{
+    background:var(--primary);
+    color:white;
+}
+
+.card .cancel{
     background:#e63946;
     color:white;
 }
@@ -129,6 +164,12 @@ header button{
     width:340px;
     border-radius:30px;
     text-align:center;
+    animation:popupZoom 0.4s ease;
+}
+
+@keyframes popupZoom{
+    from{opacity:0; transform:scale(0.8)}
+    to{opacity:1; transform:scale(1)}
 }
 
 .popup-content input{
