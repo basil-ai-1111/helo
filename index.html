@@ -357,12 +357,12 @@ function openHospital(type){
             <h3>${d.name}</h3>
             <p>${d.dept}</p>
             <p>Time: ${d.slots.join(", ")}</p>
-            <button onclick="bookDoctor('${d.name}','${JSON.stringify(d.slots)}')">Book Slot</button>
+            <button onclick='bookDoctor("${d.name}",${JSON.stringify(d.slots)})'>Book Slot</button>
         </div>`;
     });
 }
 
-// Open booking popup with time slots
+// Open booking popup with time slots (disables already booked)
 function bookDoctor(name, slots){
     selectedDoctor = name;
     editingId = null;
@@ -370,12 +370,20 @@ function bookDoctor(name, slots){
     userPhone.value = "";
     consultDate.value = "";
     timeSlot.innerHTML = `<option value="">Select Time Slot</option>`;
-    slots = JSON.parse(slots);
     slots.forEach(s => {
         timeSlot.innerHTML += `<option value="${s}">${s}</option>`;
     });
     bookingPopup.classList.add("show");
 }
+
+// Disable booked slots dynamically when date changes
+consultDate.addEventListener("input", () => {
+    let bookings = JSON.parse(localStorage.getItem("bookings")) || [];
+    Array.from(timeSlot.options).forEach(option=>{
+        if(option.value==="") return;
+        option.disabled = bookings.some(b=>b.doctor===selectedDoctor && b.date===consultDate.value && b.time===option.value);
+    });
+});
 
 // Validate and show QR
 function showQR(){
@@ -457,14 +465,16 @@ function editBooking(index){
     userPhone.value = b.phone;
     consultDate.value = b.date;
     timeSlot.innerHTML = `<option value="">Select Time Slot</option>`;
-    // populate slots
     let slots = [];
     for(let key in doctorsData){
         doctorsData[key].forEach(d=>{
             if(d.name === selectedDoctor) slots = d.slots;
         });
     }
-    slots.forEach(s => timeSlot.innerHTML += `<option value="${s}">${s}</option>`);
+    slots.forEach(s => {
+        let disabled = bookings.some((bk,i)=>i!==index && bk.doctor===selectedDoctor && bk.date===consultDate.value && bk.time===s);
+        timeSlot.innerHTML += `<option value="${s}" ${disabled ? "disabled" : ""}>${s}</option>`;
+    });
     timeSlot.value = b.time;
     bookingPopup.classList.add("show");
 }
