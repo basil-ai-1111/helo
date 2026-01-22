@@ -3,7 +3,6 @@
 <head>
 <meta charset="UTF-8">
 <title>Ahalia Hospitals</title>
-
 <style>
 :root{
     --bg-main:#f7f4ef;
@@ -24,7 +23,6 @@ body{
     animation:fadeIn 0.8s ease;
 }
 
-/* Fade In */
 @keyframes fadeIn{
     from{opacity:0}
     to{opacity:1}
@@ -59,7 +57,6 @@ header button:hover{
     transform:translateY(-2px);
 }
 
-/* Slide Up */
 .container{
     padding:60px 50px;
     animation:slideUp 0.6s ease;
@@ -85,7 +82,6 @@ header button:hover{
     color:var(--primary);
 }
 
-/* Floating Hero */
 .hero-box{
     background:var(--bg-card);
     padding:40px;
@@ -96,7 +92,7 @@ header button:hover{
 
 @keyframes float{
     0%,100%{transform:translateY(0)}
-    50%{transform:translateY(-10px)}
+    50%{transform:translateY(-8px)}
 }
 
 .section-title{
@@ -119,6 +115,7 @@ header button:hover{
     text-align:center;
     box-shadow:0 15px 35px rgba(0,0,0,0.08);
     transition:0.4s;
+    position:relative;
 }
 
 .card:hover{
@@ -134,7 +131,6 @@ header button:hover{
     background:var(--secondary);
     cursor:pointer;
     font-weight:600;
-    transition:0.3s;
 }
 
 .card button:hover{
@@ -142,9 +138,27 @@ header button:hover{
     color:white;
 }
 
-.card .cancel{
-    background:#e63946;
-    color:white;
+.stats{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+    gap:30px;
+    margin:90px 0;
+}
+
+.stat{
+    background:var(--bg-card);
+    padding:30px;
+    border-radius:25px;
+    text-align:center;
+    box-shadow:0 12px 30px rgba(0,0,0,0.08);
+}
+
+.cta{
+    background:linear-gradient(120deg,var(--secondary),var(--accent));
+    padding:70px;
+    border-radius:40px;
+    text-align:center;
+    box-shadow:0 20px 40px rgba(0,0,0,0.1);
 }
 
 .popup{
@@ -154,6 +168,7 @@ header button:hover{
     display:none;
     justify-content:center;
     align-items:center;
+    z-index:100;
 }
 
 .popup.show{ display:flex }
@@ -164,12 +179,6 @@ header button:hover{
     width:340px;
     border-radius:30px;
     text-align:center;
-    animation:popupZoom 0.4s ease;
-}
-
-@keyframes popupZoom{
-    from{opacity:0; transform:scale(0.8)}
-    to{opacity:1; transform:scale(1)}
 }
 
 .popup-content input{
@@ -194,6 +203,44 @@ small{
     color:red;
     display:none;
     font-size:12px;
+}
+
+/* Toast Notification */
+.toast{
+    position:fixed;
+    bottom:30px;
+    right:30px;
+    background:var(--primary);
+    color:white;
+    padding:15px 25px;
+    border-radius:30px;
+    opacity:0;
+    transform:translateY(20px);
+    transition:0.5s;
+    z-index:200;
+}
+.toast.show{
+    opacity:1;
+    transform:translateY(0);
+}
+
+/* Cancel / Edit buttons in card */
+.card .edit, .card .cancel{
+    position:absolute;
+    top:15px;
+    padding:5px 12px;
+    border-radius:20px;
+    border:none;
+    cursor:pointer;
+    font-size:12px;
+    font-weight:600;
+}
+.card .edit{ right:80px; background:#f0ad4e; color:white; }
+.card .cancel{ right:15px; background:#d9534f; color:white; }
+
+@media(max-width:768px){
+  .hero { grid-template-columns: 1fr; gap:20px; }
+  .grid { grid-template-columns: 1fr; gap:20px; }
 }
 </style>
 </head>
@@ -262,6 +309,8 @@ small{
     </div>
 </div>
 
+<div class="toast" id="toast"></div>
+
 <script>
 const home = document.getElementById("home");
 const doctorsPage = document.getElementById("doctorsPage");
@@ -270,6 +319,7 @@ const doctorsList = document.getElementById("doctorsList");
 const bookingsList = document.getElementById("bookingsList");
 const bookingPopup = document.getElementById("bookingPopup");
 const qrPopup = document.getElementById("qrPopup");
+const toast = document.getElementById("toast");
 
 const userName = document.getElementById("userName");
 const userPhone = document.getElementById("userPhone");
@@ -280,7 +330,9 @@ const phoneError = document.getElementById("phoneError");
 const dateError = document.getElementById("dateError");
 
 consultDate.min = new Date().toISOString().split("T")[0];
+
 let selectedDoctor = "";
+let editingId = null;
 
 const doctorsData = {
     diabetes:[{name:"Dr. Anil Kumar",dept:"Endocrinology",time:"9AM–1PM"}],
@@ -289,6 +341,7 @@ const doctorsData = {
     women:[{name:"Dr. Lakshmi Devi",dept:"Gynecology",time:"11AM–3PM"}]
 };
 
+// Open doctor list
 function openHospital(type){
     home.classList.add("hidden");
     doctorsPage.classList.remove("hidden");
@@ -304,11 +357,17 @@ function openHospital(type){
     });
 }
 
+// Open booking popup
 function bookDoctor(name){
     selectedDoctor = name;
+    editingId = null;
+    userName.value = "";
+    userPhone.value = "";
+    consultDate.value = "";
     bookingPopup.classList.add("show");
 }
 
+// Validate and show QR
 function showQR(){
     nameError.style.display = phoneError.style.display = dateError.style.display = "none";
     let valid = true;
@@ -323,27 +382,43 @@ function showQR(){
     qrPopup.classList.add("show");
 }
 
+// Final confirm & save booking
 function finalConfirm(){
     let bookings = JSON.parse(localStorage.getItem("bookings")) || [];
-    bookings.push({
-        doctor:selectedDoctor,
-        name:userName.value,
-        phone:userPhone.value,
-        date:consultDate.value
-    });
+    
+    if(editingId !== null){
+        // Edit existing booking
+        bookings[editingId] = {
+            doctor:selectedDoctor,
+            name:userName.value,
+            phone:userPhone.value,
+            date:consultDate.value
+        };
+        showToast("Appointment updated!");
+    } else {
+        // New booking
+        bookings.push({
+            doctor:selectedDoctor,
+            name:userName.value,
+            phone:userPhone.value,
+            date:consultDate.value
+        });
+        showToast("Appointment booked!");
+    }
+    
     localStorage.setItem("bookings", JSON.stringify(bookings));
     qrPopup.classList.remove("show");
-    alert("Appointment booked successfully!");
     goHome();
 }
 
+// Show bookings
 function showBookings(){
     home.classList.add("hidden");
     bookingsPage.classList.remove("hidden");
     bookingsList.innerHTML="";
 
     let bookings = JSON.parse(localStorage.getItem("bookings")) || [];
-    if(bookings.length===0){
+    if(bookings.length === 0){
         bookingsList.innerHTML="<p>No appointments booked yet.</p>";
         return;
     }
@@ -355,25 +430,47 @@ function showBookings(){
             <p>${b.name}</p>
             <p>${b.phone}</p>
             <p>${b.date}</p>
-            <button class="cancel" onclick="cancelBooking(${i})">Cancel Appointment</button>
+            <button class="edit" onclick="editBooking(${i})">Edit</button>
+            <button class="cancel" onclick="cancelBooking(${i})">Cancel</button>
         </div>`;
     });
 }
 
+// Edit booking
+function editBooking(index){
+    let bookings = JSON.parse(localStorage.getItem("bookings")) || [];
+    let b = bookings[index];
+    selectedDoctor = b.doctor;
+    editingId = index;
+    userName.value = b.name;
+    userPhone.value = b.phone;
+    consultDate.value = b.date;
+    bookingPopup.classList.add("show");
+}
+
+// Cancel booking
 function cancelBooking(index){
     if(!confirm("Cancel this appointment?")) return;
     let bookings = JSON.parse(localStorage.getItem("bookings")) || [];
     bookings.splice(index,1);
     localStorage.setItem("bookings", JSON.stringify(bookings));
+    showToast("Appointment cancelled!");
     showBookings();
 }
 
+// Go home
 function goHome(){
     home.classList.remove("hidden");
     doctorsPage.classList.add("hidden");
     bookingsPage.classList.add("hidden");
 }
-</script>
 
+// Show toast
+function showToast(msg){
+    toast.textContent = msg;
+    toast.classList.add("show");
+    setTimeout(()=>toast.classList.remove("show"),2000);
+}
+</script>
 </body>
 </html>
