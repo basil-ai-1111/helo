@@ -50,22 +50,10 @@ header button{
     padding:10px 22px;
     border-radius:30px;
     cursor:pointer;
-    transition:0.3s;
-}
-
-header button:hover{
-    background:#5a7f71;
-    transform:translateY(-2px);
 }
 
 .container{
     padding:60px 50px;
-    animation:slideUp 0.6s ease;
-}
-
-@keyframes slideUp{
-    from{opacity:0; transform:translateY(30px)}
-    to{opacity:1; transform:translateY(0)}
 }
 
 .hidden{ display:none }
@@ -75,7 +63,6 @@ header button:hover{
     grid-template-columns:1fr 1fr;
     gap:40px;
     align-items:center;
-    margin-bottom:80px;
 }
 
 .hero h1{
@@ -88,12 +75,6 @@ header button:hover{
     padding:40px;
     border-radius:30px;
     box-shadow:0 20px 40px rgba(0,0,0,0.08);
-    animation:float 3s ease-in-out infinite;
-}
-
-@keyframes float{
-    0%,100%{transform:translateY(0)}
-    50%{transform:translateY(-8px)}
 }
 
 .section-title{
@@ -115,50 +96,20 @@ header button:hover{
     padding:30px;
     text-align:center;
     box-shadow:0 15px 35px rgba(0,0,0,0.08);
-    transition:0.4s;
-}
-
-.card:hover{
-    transform:translateY(-8px) scale(1.02);
-    box-shadow:0 25px 45px rgba(0,0,0,0.12);
 }
 
 .card button{
-    margin-top:18px;
-    padding:10px 26px;
+    margin-top:15px;
+    padding:10px 22px;
     border:none;
     border-radius:30px;
     background:var(--secondary);
     cursor:pointer;
-    font-weight:600;
 }
 
-.card button:hover{
-    background:var(--primary);
+.card button.cancel{
+    background:#e63946;
     color:white;
-}
-
-.stats{
-    display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
-    gap:30px;
-    margin:90px 0;
-}
-
-.stat{
-    background:var(--bg-card);
-    padding:30px;
-    border-radius:25px;
-    text-align:center;
-    box-shadow:0 12px 30px rgba(0,0,0,0.08);
-}
-
-.cta{
-    background:linear-gradient(120deg,var(--secondary),var(--accent));
-    padding:70px;
-    border-radius:40px;
-    text-align:center;
-    box-shadow:0 20px 40px rgba(0,0,0,0.1);
 }
 
 .popup{
@@ -288,7 +239,6 @@ const phoneError = document.getElementById("phoneError");
 const dateError = document.getElementById("dateError");
 
 consultDate.min = new Date().toISOString().split("T")[0];
-
 let selectedDoctor = "";
 
 const doctorsData = {
@@ -315,9 +265,6 @@ function openHospital(type){
 
 function bookDoctor(name){
     selectedDoctor = name;
-    userName.value = "";
-    userPhone.value = "";
-    consultDate.value = "";
     bookingPopup.classList.add("show");
 }
 
@@ -355,20 +302,29 @@ function showBookings(){
     bookingsList.innerHTML="";
 
     let bookings = JSON.parse(localStorage.getItem("bookings")) || [];
-    if(bookings.length === 0){
+    if(bookings.length===0){
         bookingsList.innerHTML="<p>No appointments booked yet.</p>";
         return;
     }
 
-    bookings.forEach(b=>{
+    bookings.forEach((b,i)=>{
         bookingsList.innerHTML+=`
         <div class="card">
             <h3>${b.doctor}</h3>
             <p>${b.name}</p>
             <p>${b.phone}</p>
             <p>${b.date}</p>
+            <button class="cancel" onclick="cancelBooking(${i})">Cancel Appointment</button>
         </div>`;
     });
+}
+
+function cancelBooking(index){
+    if(!confirm("Cancel this appointment?")) return;
+    let bookings = JSON.parse(localStorage.getItem("bookings")) || [];
+    bookings.splice(index,1);
+    localStorage.setItem("bookings", JSON.stringify(bookings));
+    showBookings();
 }
 
 function goHome(){
