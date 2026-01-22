@@ -5,12 +5,12 @@
 <title>Ahalia Hospitals</title>
 <style>
 :root{
-    --bg-main:#FAF9F6;
-    --bg-card:#B0C4DE;
-    --primary:#7B68EE;
-    --secondary:#B0C4DE;
-    --accent:#E6E6FA;
-    --text-dark:#2F2F2F;
+    --bg-main:#FAF9F6; /* page background */
+    --bg-card:#E6E6FA; /* card background */
+    --primary:#7B68EE; /* main buttons/headings */
+    --secondary:#B0C4DE; /* secondary buttons/cards */
+    --accent:#D8BFD8; /* gradients for hero/cta */
+    --text-dark:#2F2F2F; /* main text */
 }
 
 *{ box-sizing:border-box }
@@ -18,7 +18,7 @@
 body{
     margin:0;
     font-family:'Segoe UI',sans-serif;
-    background:linear-gradient(180deg,var(--bg-main),var(--accent));
+    background:linear-gradient(180deg,var(--bg-main),#F0E6FA);
     color:var(--text-dark);
     animation:fadeIn 0.8s ease;
 }
@@ -40,7 +40,7 @@ header{
     z-index:10;
 }
 
-header h3{ margin:0; color:var(--primary) }
+header h3{ margin:0; color:var(--primary); font-weight:600; }
 
 header button{
     background:var(--primary);
@@ -50,6 +50,7 @@ header button{
     border-radius:30px;
     cursor:pointer;
     transition:0.3s;
+    font-weight:600;
 }
 
 header button:hover{
@@ -80,14 +81,16 @@ header button:hover{
 .hero h1{
     font-size:42px;
     color:var(--primary);
+    line-height:1.2;
 }
 
 .hero-box{
-    background:var(--bg-card);
+    background:linear-gradient(135deg,var(--accent),var(--bg-card));
     padding:40px;
     border-radius:30px;
     box-shadow:0 20px 40px rgba(0,0,0,0.08);
     animation:float 3s ease-in-out infinite;
+    color:#2F2F2F;
 }
 
 @keyframes float{
@@ -109,13 +112,14 @@ header button:hover{
 }
 
 .card{
-    background:var(--bg-card);
+    background:linear-gradient(135deg,var(--bg-card),var(--accent));
     border-radius:28px;
     padding:30px;
     text-align:center;
     box-shadow:0 15px 35px rgba(0,0,0,0.08);
     transition:0.4s;
     position:relative;
+    color:#2F2F2F;
 }
 
 .card:hover{
@@ -131,6 +135,7 @@ header button:hover{
     background:var(--secondary);
     cursor:pointer;
     font-weight:600;
+    transition:0.3s;
 }
 
 .card button:hover{
@@ -146,7 +151,7 @@ header button:hover{
 }
 
 .stat{
-    background:var(--bg-card);
+    background:linear-gradient(135deg,var(--bg-card),var(--accent));
     padding:30px;
     border-radius:25px;
     text-align:center;
@@ -159,6 +164,8 @@ header button:hover{
     border-radius:40px;
     text-align:center;
     box-shadow:0 20px 40px rgba(0,0,0,0.1);
+    margin-top:60px;
+    color:#2F2F2F;
 }
 
 .popup{
@@ -271,6 +278,11 @@ small{
         <div class="card"><h3>Ayurvedha</h3><button onclick="openHospital('ayurvedha')">View Doctors</button></div>
         <div class="card"><h3>Women & Children</h3><button onclick="openHospital('women')">View Doctors</button></div>
     </div>
+
+    <div class="cta">
+        <h2>Need Help? Book Your Appointment Now!</h2>
+        <button onclick="showBookings()">View Booked Slots</button>
+    </div>
 </div>
 
 <div class="container hidden" id="doctorsPage">
@@ -313,7 +325,7 @@ small{
 <div class="toast" id="toast"></div>
 
 <script>
-// JS logic remains exactly same as previous code (bookings, edit, cancel, popup, toast)
+// JS logic same as previous code
 const home = document.getElementById("home");
 const doctorsPage = document.getElementById("doctorsPage");
 const bookingsPage = document.getElementById("bookingsPage");
